@@ -5,18 +5,22 @@ const sendData = (url, data) => {
         method: 'POST',
         body: data,
         headers: {
-          'Content-type': 'application/json; charset=UTF-8',
+            'Content-type': 'application/json; charset=UTF-8',
         },
-    }).then(response => response.json())
+    })
+        .then(response => response.ok ? response : Promise.reject(response))
+        .then(response => response.json())
+        .catch(() => console.log('ошибочка вышла'));
 
 };
 
 const getData = () => {
-    return fetch('../db.json')
+    return fetch('../b.json')
         .then(response => response.json())
         .then(data => {
             return data
         })
+        .catch(() => console.log('база не загрузилась'));
 };
 
 sendData('https://jsonplaceholder.typicode.com/posts', JSON.stringify(getData().data))
